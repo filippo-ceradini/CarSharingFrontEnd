@@ -1,32 +1,12 @@
 const tableBody = document.getElementById("members-table-body");
 const localMembersApi = "http://localhost:8080/members"
 
-// Get the modal element
-// const modal = document.getElementById("editMemberModal");
-
-// Get the button that opens the modal
-const btn = document.getElementById("create-new-member");
-//
-// // Get the <span> element that closes the modal
-// const span = document.getElementsByClassName("close")[0];
-//
-//
-// // When the user clicks on <span> (x), close the modal
-// span.onclick = function () {
-//     modal.style.display = "none";
-// }
-
-// When the user clicks anywhere outside of the modal, close it
-// window.onclick = function (event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//     }
-// }
 
 document.addEventListener("DOMContentLoaded", () => {
     getMembers()
 });
 
+// Function that filters the table
 $(document).ready(function () {
     $("#searchInput").keyup(function () {
         // Get the search term
@@ -77,8 +57,13 @@ function displayMembersTable(members) {
         row.appendChild(zipCell);
 
         const ApprovedCell = document.createElement("td");
-        ApprovedCell.innerHTML = member.approved;
+        if (member.approved) {
+            ApprovedCell.innerHTML = "&#x2713;";
+        } else {
+            ApprovedCell.innerHTML = "";
+        }
         row.appendChild(ApprovedCell);
+
 
         const RankingCell = document.createElement("td");
         RankingCell.innerHTML = member.ranking;
@@ -108,7 +93,7 @@ function displayMembersTable(members) {
                     "Are you sure you want to delete " + member.firstName + " " + member.lastName + "?"
                 )
             ) {
-                deleteRequest(member.id);
+                deleteRequest(member.id).then(()=>location.reload())
             }
             // Handle the delete button click event
             // (e.g., send a DELETE request to the server)
@@ -124,16 +109,7 @@ function displayMembersTable(members) {
 
 
 // When the user clicks the create Button, open the modal
-btn.onclick = function () {
-    let newMember2 = {
-        "firstName": "Jonathan",
-        "lastName": "Bomber",
-        "street": "123 Main St",
-        "city": "New York",
-        "zip": "10001",
-        "approved": true,
-        "ranking": 1
-    }
+function createNewMember() {
     let newMember = {
         "firstName": "Insert First Name",
         "lastName": "Insert Last Name",
@@ -143,24 +119,8 @@ btn.onclick = function () {
         "approved": "Toggle if Approved",
         "ranking": "Insert Ranking",
     }
-    console.log(newMember.firstName)
     initMemberModal("create", newMember)
 }
-
-
-// // When the user clicks on <span> (x), close the modal
-// span.onclick = function () {
-//     modal.style.display = "none";
-//
-// }
-//
-// // When the user clicks anywhere outside of the modal, close it
-// window.onclick = function (event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//
-//     }
-// }
 
 // Initialize the modal
 function initMemberModal(mode, member) {
@@ -220,26 +180,32 @@ async function submitMember(text) {
     const approved = $('#approved').is(':checked');
     const ranking = $('#ranking').val();
 
-    let newMember = {
-        "firstName": firstName,
-        "lastName": lastName,
-        "street": street,
-        "city": city,
-        "zip": zip,
-        "approved": approved,
-        "ranking": ranking
-    }
-
     if (text === "Create") {
         if (confirm("Are you sure you want to create this member?")) {
-            console.log("Create ")
-            await postRequest(newMember)
+            let newMember = {
+                "firstName": firstName,
+                "lastName": lastName,
+                "street": street,
+                "city": city,
+                "zip": zip,
+                "approved": approved,
+                "ranking": ranking
+            }
+            await postRequest(newMember).then(() => location.reload())
         }
     } else if (confirm("Are you sure you want to edit this member?")) {
-        console.log(text)
-        await putRequest(newMember)
+        let newMember = {
+            "id": id,
+            "firstName": firstName,
+            "lastName": lastName,
+            "street": street,
+            "city": city,
+            "zip": zip,
+            "approved": approved,
+            "ranking": ranking
+        }
+        await putRequest(newMember).then(() => location.reload())
     }
-
 
     // Close the modal
     $('#editMemberModal').modal('hide');

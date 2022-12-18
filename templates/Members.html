@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="main.html">DaniSharing</a>
@@ -34,7 +35,7 @@
     </div>
 </nav>
 
-<!-- Input field -->
+<!-- Search Input Field -->
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8 col-sm-10">
@@ -44,6 +45,8 @@
 </div>
 <br>
 <br>
+
+<!--Table-->
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-12">
@@ -58,7 +61,8 @@
                     <th scope="col">Zip</th>
                     <th scope="col">Approved</th>
                     <th scope="col">Ranking</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
                 </thead>
                 <tbody id="members-table-body">
@@ -67,12 +71,14 @@
         </div>
     </div>
 </div>
-<br><br><br>
+<br>
+<br>
+<br>
+
+<!--Button to add New Member-->
 <button type="button" class="btn btn-primary btn-lg btn-block mx-auto my-5" style="width: 200px;"
-        id="create-new-member">Add a New Member
+        id="create-new-member" onclick="createNewMember()">Add a New Member
 </button>
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="editMemberModal" tabindex="-1" role="dialog" aria-labelledby="editMemberModalLabel"
@@ -123,7 +129,7 @@
                     </div>
                     <div class="modal-footer" id="modal-footer">
                         <!-- Modal footer will be updated based on context -->
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload()">Close</button>
                         <button type="button" class="btn btn-primary" id="modal-create-button" onclick="submitMember('Create')">Create</button>
                         <button type="button" class="btn btn-primary" id="modal-edit-button" onclick="submitMember('edit')">Edit</button>
                     </div>
@@ -133,7 +139,11 @@
     </div>
 </div>
 
-
-    <script src="../source/JavaScript/Members.js"></script>
+<!--Bootstrap, Jquery and JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../source/JavaScript/Members.js"></script>
 </body>
 </html>

@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reservations</title>
     <link rel="stylesheet" href="../source/css/main.css">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <!--Navbar-->
@@ -21,20 +26,110 @@
                 <a class="nav-link" href="Cars.html">Cars</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="Reservations.html">Registration</a>
+                <a class="nav-link" href="Reservations.html">Reservation</a>
             </li>
         </ul>
     </div>
 </nav>
-<script src="../source/JavaScript/main.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+<!-- Search Input Field -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <input type="text" id="searchInput" placeholder="Search" class="form-control">
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+<!--Table-->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <table id="reservation-table" class="table table-striped bg-white rounded">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Reservation Date</th>
+                    <th scope="col">Rental Date</th>
+                    <th scope="col">Car</th>
+                    <th scope="col">Member</th>
+                </tr>
+                </thead>
+                <tbody id="reservation-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!--Button to add New Member-->
+<button type="button" class="btn btn-primary btn-lg btn-block mx-auto my-5" style="width: 200px;"
+        id="create-new-reservation" onclick="createNewReservation()">Add a New Reservation
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="edit-reservation-modal" tabindex="-1" role="dialog" aria-labelledby="editReservationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Modal header will be updated based on context -->
+                <h5 class="modal-title" id="editReservationModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to edit reservation -->
+                <form id="modal-form">
+                    <div class="form-group d-none">
+                        <label for="id">Id</label>
+                        <input type="number" class="form-control" id="id">
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationDate">Reservation Date</label>
+                        <input type="date" class="form-control" id="reservationDate" placeholder="Enter reservation date">
+                    </div>
+                    <div class="form-group">
+                        <label for="rentalDate">Rental Date</label>
+                        <input type="date" class="form-control" id="rentalDate" placeholder="Enter rental date">
+                    </div>
+                    <div class="form-group">
+                        <label for="car-selector">Car</label>
+                        <select class="form-control" id="car-selector">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="member-selector">Member</label>
+                        <select class="form-control" id="member-selector">
+                        </select>
+                    </div>
+
+                    <div class="modal-footer" id="modal-footer">
+                        <!-- Modal footer will be updated based on context -->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload()">Close</button>
+                        <button type="button" class="btn btn-primary" id="modal-create-button" onclick="submitReservation('Create')">Create</button>
+                        <button type="button" class="btn btn-primary" id="modal-edit-button" onclick="submitReservation('edit')">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../source/JavaScript/Reservation.js"></script>
 </body>
 </html>
